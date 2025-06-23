@@ -294,8 +294,20 @@ You can provide your own VCF reference file:
 
 **Requirements for custom VCF files:**
 - Must be bgzip-compressed (`.vcf.gz`)
-- Must have a corresponding index file (`.vcf.gz.csi` or `.vcf.gz.tbi`)
+- Must have a corresponding index file:
+  - **Preferred**: `.vcf.gz.csi` (bcftools) or `.vcf.gz.tbi` (tabix)
+  - **Legacy**: `.vcf.gz.idx.gz` (GATK-style, will be converted automatically)
 - Should use standard chromosome naming (chr1, chr2, ..., chrX, chrY, chrMT)
+
+### Index File Formats
+
+getSNPrs supports multiple VCF index formats:
+
+1. **CSI format** (`.csi`): Created by `bcftools index`
+2. **TBI format** (`.tbi`): Created by `tabix -p vcf`  
+3. **GATK format** (`.idx.gz`): Legacy format, automatically converted
+
+If you have a `.idx.gz` file (like the default reference), the tool will automatically attempt to create a bcftools-compatible index for better performance.
 
 ## Performance
 
@@ -381,22 +393,52 @@ The tool includes comprehensive error checking:
    chmod +x getSNPrs.sh
    ```
 
-3. **"Reference file download failed"**
+3. **"syntax error in expression" or arithmetic errors**
+   ```bash
+   # This usually indicates input file format issues
+   # Ensure your input file has proper chromosome and position format
+   # Check for empty lines or non-numeric positions
+   ```
+
+4. **"Failed to create VCF index" or slow performance**
+   ```bash
+   # Install tabix for better indexing support
+   sudo apt-get install tabix  # Ubuntu/Debian
+   
+   # Or manually create an index
+   bcftools index your_file.vcf.gz
+   # OR
+   tabix -p vcf your_file.vcf.gz
+   
+   # The tool will still work without an index, just slower
+   ```
+
+5. **"Reference file download failed"**
    ```bash
    # Check internet connection or use local reference
    ./getSNPrs.sh -i file.txt -r local_reference.vcf.gz
    ```
 
-4. **"No results found"**
+6. **"No results found"**
    - Check chromosome format consistency
    - Verify position coordinates are correct
    - Ensure reference file covers your regions of interest
+   - Try with debug output to see what's happening
 
-5. **Memory issues with large files**
+7. **Memory issues with large files**
    ```bash
    # Reduce chunk size
    ./getSNPrs.sh -i large_file.txt -s 100
    ```
+
+### VCF File Requirements
+
+For optimal performance, VCF files should be:
+- **Compressed**: Use bgzip compression (`.vcf.gz`)
+- **Indexed**: Have a corresponding index file (`.csi` or `.tbi`)
+- **Properly formatted**: Follow VCF specification
+
+The tool will automatically attempt to create an index if missing, but this may fail due to permissions or tool availability.
 
 ### Debug Mode
 
