@@ -1,0 +1,53 @@
+# getSNPrs .gitignore
+
+# Reference files (large, downloaded automatically)
+*.vcf.gz
+*.vcf.idx.gz
+*.vcf.gz.csi
+*.vcf.gz.tbi
+
+# Output files
+*_output.txt
+*_results.txt
+*_report.txt
+*_getSNPrs_report.txt
+results.txt
+output.txt
+
+# Temporary files
+tmp_*
+temp_*
+chunk_*
+*.tmp
+
+# Log files
+*.log
+
+# Test output files
+test_output*
+temp_large_output.txt
+
+# OS specific files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Editor files
+.vscode/
+.idea/
+*.sublime-*
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Runtime files
+*.pid
+
+# Compressed files (except reference examples)
+*.tar.gz
+*.zip
+!examples/*.gz

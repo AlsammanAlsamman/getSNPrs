@@ -1,0 +1,25 @@
+# Example input files for getSNPrs
+
+# test_snps_chr.txt - Chr-prefixed format
+chr1	998371
+chr1	998395
+chr1	998501
+chr2	1234567
+chrX	123456
+chrY	789012
+chrMT	16569
+
+# test_snps_numeric.txt - Numeric format  
+1	998371
+1	998395
+1	998501
+2	1234567
+23	123456
+24	789012
+25	16569
+
+# test_snps_mixed.txt - Mixed format with annotations
+chr1	998371	rs123456
+2	998395	some_annotation
+chrX	123456	variant_1
+23	789012	test_variant
